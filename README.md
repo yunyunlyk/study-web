@@ -8,7 +8,7 @@
 **不含任何资料 / 账号 / 笔记 / 密钥**；进去要先输分享码 —— 门禁而已，代码本身是公开的）：
 
 - GitHub Pages：<https://yunyunlyk.github.io/study-web/>
-- 自定义域名：<https://study-web.com/>（域名解析配置中）
+- 自定义域名：**暂未绑定**（绑之前必须先在注册商买到一个域名，见文末「本仓库的实际部署」）
 
 一个跑在你自己电脑上的学习资料网站：自动收录你指定的资料目录（默认值在 `core/config.py`，
 也可以在管理端再加最多 12 个只读目录）里的全部资料，支持网页上传、全文搜索、AI 识别扫描件、
@@ -1235,21 +1235,31 @@ set STUDY_CHROME=D:\...\chrome.exe   # 浏览器验收指定浏览器（找不�
 
 ---
 
-## 本仓库的实际部署（GitHub Pages + 自定义域名）
+## 本仓库的实际部署（GitHub Pages）
 
 - **站点内容**：`docs/index.html` —— 由「管理端 → 发布公网版」生成，`core/webbuild.py` 每次重建都会自动同步这一份
 - **Pages 设置**：仓库 Settings → Pages → Source 选 `Deploy from a branch` → Branch `main` + `/docs`
-- **自定义域名**：`study-web.com`，已经写在 `docs/CNAME` 里（GitHub 认这个文件）
-- **域名托管在 Cloudflare 时，DNS 需要这几条**：
+- **现在的网址**：<https://yunyunlyk.github.io/study-web/>（免费、永久，不需要域名）
+- 站点只放**零资料的离线单文件版**；换分享码之后要重新生成一次公网版并提交 `docs/index.html`，否则线上还是旧门禁
 
-  | 类型 | 名称 | 内容 | 代理状态 |
-  | --- | --- | --- | --- |
-  | A | `@` | `185.199.108.153` | **先关掉**（灰云 / DNS only） |
-  | A | `@` | `185.199.109.153` | 同上 |
-  | A | `@` | `185.199.110.153` | 同上 |
-  | A | `@` | `185.199.111.153` | 同上 |
-  | CNAME | `www` | `yunyunlyk.github.io` | 同上 |
+### 想绑自己的域名？顺序很重要
 
-- 等 GitHub 把证书签发好、Pages 里能勾上 **Enforce HTTPS** 之后，再考虑把 Cloudflare 代理打开（橙云）；
-  那时 SSL/TLS 模式必须选 **Full (strict)**，否则会重定向循环。
-- 站点只放**零资料的离线单文件版**；换分享码之后要重新生成一次公网版并提交 `docs/index.html`，否则线上还是旧门禁。
+**必须先在域名注册商那里买到这个域名**，然后才轮到 GitHub：
+
+1. 在注册商买域名（阿里云 / 腾讯云 / Cloudflare Registrar / Namecheap…）。⚠️ **在 Pages 里"填一个域名"不等于拥有它** ——
+   没买过的域名永远过不了 DNS 检查，而且会把 `*.github.io` 的地址一起 301 跳走（这个坑本项目踩过两次）。
+2. 到 Cloudflare（或注册商自己的 DNS）按下面这张表加记录：
+
+   | 类型 | 名称 | 内容 | Cloudflare 代理状态 |
+   | --- | --- | --- | --- |
+   | A | `@` | `185.199.108.153` | **先关掉**（灰云 / DNS only） |
+   | A | `@` | `185.199.109.153` | 同上 |
+   | A | `@` | `185.199.110.153` | 同上 |
+   | A | `@` | `185.199.111.153` | 同上 |
+   | CNAME | `www` | `yunyunlyk.github.io` | 同上 |
+
+3. 回 GitHub：Settings → Pages → **Custom domain** 填域名 → Save。
+   **`docs/CNAME` 由 GitHub 自己创建/更新，不要手工往仓库里放这个文件** ——
+   手工放一个还没生效的域名，会让整个站点 301 跳到打不开的地址上（本项目正是这么踩坑的）。
+4. 等 GitHub 把证书签发好、Pages 里能勾上 **Enforce HTTPS** 之后，再考虑把 Cloudflare 代理打开（橙云）；
+   那时 SSL/TLS 模式必须选 **Full (strict)**，否则会重定向循环。
