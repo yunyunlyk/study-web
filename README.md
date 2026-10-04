@@ -1263,3 +1263,8 @@ set STUDY_CHROME=D:\...\chrome.exe   # 浏览器验收指定浏览器（找不�
    手工放一个还没生效的域名，会让整个站点 301 跳到打不开的地址上（本项目正是这么踩坑的）。
 4. 等 GitHub 把证书签发好、Pages 里能勾上 **Enforce HTTPS** 之后，再考虑把 Cloudflare 代理打开（橙云）；
    那时 SSL/TLS 模式必须选 **Full (strict)**，否则会重定向循环。
+
+### 后续规划
+
+给公网版加「账号体系」的可行性、四条路线对比和迁移清单，见 **[`规划-在线账号体系.md`](规划-在线账号体系.md)**
+（预备分支：`feature/online-accounts`，开工时 `git switch feature/online-accounts`）。
