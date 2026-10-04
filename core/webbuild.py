@@ -7,6 +7,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import html
+import json
 import secrets
 import urllib.request
 from datetime import datetime, timezone
@@ -112,10 +113,38 @@ def audit_build(text: str) -> list:
 
 
 # ---------------- 构建 ----------------
-def build(code: str = "", title: str = "学习资料库") -> dict:
+def _icon_data_uri(name: str, size: int = 0) -> str:
+    """把 web/icons 里的图标读成 data URI —— 单文件版也要有标签页图标。
+
+    size > 0 时先缩到那个边长再编码：收藏夹图标只显示 16~32px，
+    没必要把一张 192 的大图塞进去。
+    """
+    try:
+        data = (config.WEB_DIR / "icons" / name).read_bytes()
+    except OSError:
+        return ""
+    if size:
+        try:
+            import io
+
+            from PIL import Image
+            buf = io.BytesIO()
+            im = Image.open(io.BytesIO(data)).convert("RGBA")
+            im = im.resize((int(size), int(size)), Image.LANCZOS)
+            im.save(buf, format="PNG", optimize=True)
+            data = buf.getvalue()
+        except Exception:
+            pass
+    return "data:image/png;base64," + base64.b64encode(data).decode("ascii")
+
+
+def build(code: str = "", title: str = "") -> dict:
     code = str(code or share_code()).strip()
     if len(code) < 4:
         raise ValueError("分享码至少要 4 位")
+    # 站名取自管理端「系统设置 → 站点名字」；文件标题（标签页）默认跟它一致
+    site_name = str(config.site_settings().get("name") or "").strip() or "学习资料库"
+    title = str(title or "").strip() or site_name
     css = _read(config.WEB_DIR / "style.css")
     models_js = _read(config.WEB_DIR / "models.js")
     store_js = _read(config.WEB_DIR / "store.js")
@@ -129,16 +158,25 @@ def build(code: str = "", title: str = "学习资料库") -> dict:
     digest = hash_code(code, salt)
     boot = (
         "window.STUDY_MODE='local';"
+        # 单文件版没有服务器，站名只能在构建时注入（本机版读的是账号里的站点设置）
+        "window.STUDY_SITE_NAME=" + json.dumps(site_name, ensure_ascii=False).replace("<", "\\u003c") + ";"
         "window.STUDY_GATE={salt:'" + base64.b64encode(salt).decode("ascii")
         + "',iter:" + str(GATE_ITERATIONS) + ",hash:'" + digest + "'};"
         "window.STUDY_PDFJS_BASE64=" + _b64_js(lib) + ";"
         "window.STUDY_PDFJS_WORKER_BASE64=" + _b64_js(worker) + ";"
     )
+    favicon = _icon_data_uri("icon-192.png", size=96)
+    apple_icon = _icon_data_uri("apple-touch-icon.png")
     stamp = datetime.now(timezone.utc).astimezone().strftime("%Y-%m-%d %H:%M")
     doc = (
         "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n<meta charset=\"utf-8\">\n"
         "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n"
         "<title>" + html.escape(title) + "</title>\n"
+        + ("<link rel=\"icon\" type=\"image/png\" href=\"" + favicon + "\">\n" if favicon else "")
+        + ("<link rel=\"apple-touch-icon\" href=\"" + apple_icon + "\">\n" if apple_icon else "")
+        + "<meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\n"
+        "<meta name=\"apple-mobile-web-app-title\" content=\"" + html.escape(title) + "\">\n"
+        "<meta name=\"theme-color\" content=\"#2563eb\">\n"
         "<meta name=\"description\" content=\"离线可用的资料工具：资料搜索、AI 问答、网络收集、数理化模型动画。"
         "你上传和收集的文件只存在你自己的浏览器里，不会上传到任何服务器。\">\n"
         "<style>" + css + "</style>\n"

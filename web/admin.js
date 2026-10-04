@@ -704,7 +704,7 @@
           '不占你的硬盘、不花你的钱。打开它需要一个分享码。</p>' +
           '<div class="fields">' +
             '<label>分享码<input type="text" id="wbCode" value="' + esc(wb.share_code || '') + '" style="text-transform:uppercase"></label>' +
-            '<label>文件标题<input type="text" id="wbTitle" value="学习资料库"></label>' +
+            '<label>文件标题<input type="text" id="wbTitle" value="' + esc(site.name || '学习资料库') + '"></label>' +
           '</div>' +
           '<div class="row" style="margin-top:10px">' +
             '<button class="btn primary" id="wbBuild">生成</button>' +

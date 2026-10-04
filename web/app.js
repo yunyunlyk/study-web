@@ -2439,8 +2439,10 @@
 
   // ---------- 外观 / 主题中心 ----------
   function siteName() {
-    return ((state.site && state.site.name) || (state.overview && state.overview.site
-      && state.overview.site.name) || '学习网页');
+    // 单文件公网版没有服务器，站名是构建时注入的（window.STUDY_SITE_NAME）；
+    // 本机版读的是这个账号里的站点设置。
+    return (window.STUDY_SITE_NAME || (state.site && state.site.name)
+      || (state.overview && state.overview.site && state.overview.site.name) || '学习网页');
   }
 
   function themeState() {
