@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>学习网页 · 管理端</title>
+<link rel="stylesheet" href="/static/style.css">
+<script src="/static/theme.js"></script>
+<script src="/static/ui.js"></script>
+<style>
+.adm-head{max-width:1180px;margin:0 auto;padding:18px 18px 0}
+.adm-head h1{margin:0 0 4px;font-size:22px}
+.adm-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.adm-tabs button{padding:7px 14px;border:1px solid var(--line);background:var(--card);border-radius:10px;cursor:pointer;color:var(--fg)}
+.adm-tabs button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+table.adm{font-size:13.5px}
+table.adm th{white-space:nowrap}
+table.adm td{vertical-align:top}
+table.adm tbody tr:hover{background:var(--accent-soft)}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;border-radius:999px;padding:1px 9px;font-size:12px;border:1px solid var(--line);background:var(--bg);color:var(--muted)}
+.tag.alert{background:#fdecec;border-color:#f5c2c2;color:var(--danger)}
+.tag.warn{background:#fff7e6;border-color:#f2d9a8;color:var(--warn)}
+.tag.ok{background:#e9f7ee;border-color:#bfe6cd;color:var(--ok)}
+.tag.info{background:var(--accent-soft);border-color:#c9dbff;color:var(--accent)}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.acts .btn{padding:4px 9px;font-size:12.5px;border-radius:8px}
+.hintbox{border:1px dashed var(--line);border-radius:10px;padding:10px 12px;background:var(--bg);font-size:13px;color:var(--muted)}
+.fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:10px}
+.fields label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+.fields input,.fields select{width:100%}
+.scroll{overflow-x:auto}
+</style>
+</head>
+<body>
+<div id="topbar"></div>
+<div class="adm-head">
+  <h1>管理端</h1>
+  <p class="muted small" id="admSub">只有管理员能进来。这里可以管理账号、检查违规行为、调整 AI 接入和数据存放位置。</p>
+  <div class="adm-tabs" id="admTabs"></div>
+</div>
+<div id="app"><div class="loading">正在加载…</div></div>
+<div id="toast"></div>
+<script src="/static/admin.js"></script>
+</body>
+</html>

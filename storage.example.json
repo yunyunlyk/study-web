@@ -1,0 +1,39 @@
+{
+  "_说明": [
+    "这是 storage.json 的空模板（真正的 storage.json 不进版本库，因为里面存着密钥）。",
+    "程序第一次启动时会自己生成 storage.json；只有想手工改配置时才需要照这个结构复制一份。",
+    "改完保存即可生效，不用重启服务（数据存放位置 data_dir 例外，要重启）。"
+  ],
+  "ai": {
+    "base_url": "http://127.0.0.1:15721/v1",
+    "api_key": "",
+    "model_text": "deepseek-v4-pro",
+    "model_vision": "deepseek-flash",
+    "allow_shared_ai": false
+  },
+  "invite_code": "",
+  "source_root": "D:\\学习资料",
+  "registration": "invite",
+  "webbuild": {
+    "share_code": "",
+    "forbidden": ["你自己的用户名", "本机路径里不想外发的片段"]
+  },
+  "bridge": {
+    "enabled": false,
+    "token": ""
+  },
+  "site": {
+    "name": "学习资料库",
+    "announcement": "",
+    "theme": "",
+    "allow_user_theme": true
+  },
+  "scan": {
+    "enabled": false,
+    "minutes": 30
+  },
+  "tls": {
+    "enabled": false
+  },
+  "source_roots": []
+}

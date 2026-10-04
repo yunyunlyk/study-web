@@ -1,0 +1,40 @@
+# 运行环境与依赖
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# 数据与密钥：数据库、上传、缓存、导出成品、会话密钥、指纹基线、自签证书
+data/
+
+# 设置文件里存着 AI 密钥、邀请码、分享码、连接码，不进版本库。
+# 需要一份空模板时看 storage.example.json。
+storage.json
+storage.json.tmp
+
+# 公网静态版产物：由「管理端 → 发布公网版 → 生成」重建，不进版本库。
+dist/
+
+# 隧道二进制（55 MB，第一次用会自动提示下载）
+tools/cloudflared.exe
+
+# 测试跑完可能留下的驱动页与临时目录
+web/_e2e.html
+web/_collect_e2e.html
+.playwright-cli/
+
+# 数据库万一被挪出 data/ 之外也别误提交（study.db 有 120 MB 上下）
+*.db
+*.db-wal
+*.db-shm
+
+# 编辑器目录
+.idea/
+.vscode/
+
+# Windows 自带的垃圾文件
+Thumbs.db
+desktop.ini
+
+# 个人快捷方式（文件名/内容里可能带本机用户名）
+*.lnk

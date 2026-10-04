@@ -1,0 +1,10 @@
+# 统一换行符，避免「双击 .bat 闪退」那个坑再回来。
+#
+# 背景：cmd.exe 需要 CRLF 行尾；这些批处理文件曾经是 LF（Unix）行尾，
+# 结果 cmd 解析时每行开头被啃掉几个字节（python.exe → ython.exe、echo → cho），
+# 脚本跑到一半就崩、窗口闪一下就关。详见 README「接手后第二轮」。
+#
+# 这两行保证：无论在哪台电脑 clone、或用什么编辑器改，检出时一定是 CRLF。
+# （git 内部按 LF 存储，检出时自动换成 CRLF；工作区文件内容不变。）
+*.bat text eol=crlf
+*.cmd text eol=crlf

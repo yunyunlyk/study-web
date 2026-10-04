@@ -1,0 +1,25 @@
+# 用法：.venv\Scripts\python.exe -m pip install -r requirements.txt
+# （也可以直接双击「首次安装.bat」，它会建好 .venv 再装这些）
+
+# ---- 服务本身（必需）----
+flask>=3.0
+waitress>=3.0
+requests>=2.31
+
+# ---- 各格式文字提取（必需）----
+python-docx>=1.1
+python-pptx>=1.0
+openpyxl>=3.1
+pymupdf>=1.24
+pillow>=10.0
+
+# ---- 「收集」抓网页正文（必需）----
+# 以前漏写了这一行：core/collect.py 依赖 lxml，当时是靠 python-docx 的传递依赖装上
+# 才没报错。哪天 python-docx 换了依赖树，「收集」就会突然抓不了网页。
+lxml>=5.0
+
+# ---- 下面两个是可选功能，不装也不影响其它一切 ----
+# 局域网 HTTPS（管理端 → 系统设置 → 打开 HTTPS）：没装就退回 http 启动
+cryptography>=42.0
+# 「隧道.cmd」生成手机扫码图片：没装只是不弹二维码，网址照常打印出来
+qrcode>=7.4
